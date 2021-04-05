@@ -1,0 +1,1 @@
+Select c from Cliente where c.nome like :nome
