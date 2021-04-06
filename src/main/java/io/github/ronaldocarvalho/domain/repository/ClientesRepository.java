@@ -1,6 +1,7 @@
 package io.github.ronaldocarvalho.domain.repository;
 
 import io.github.ronaldocarvalho.domain.entity.Cliente;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
