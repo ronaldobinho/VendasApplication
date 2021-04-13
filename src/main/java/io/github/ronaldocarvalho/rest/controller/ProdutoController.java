@@ -20,11 +20,15 @@ public class ProdutoController {
     public ProdutoController(ProdutosRepository produtosRepository) {
         this.produtosRepository = produtosRepository;
     }
+
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Produto saveProduto(@RequestBody Produto produto){
         return produtosRepository.save(produto);
     }
+
+
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateProduto(@PathVariable Integer id, @RequestBody Produto produto){
@@ -37,21 +41,26 @@ public class ProdutoController {
                }).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado !"));
     }
 
-    @DeleteMapping({"id"})
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteProduto(@PathVariable Integer id){
-        produtosRepository
+    @GetMapping("{id}")
+    public Produto getById(@PathVariable Integer id){
+        return produtosRepository
                 .findById(id)
-                .map(p ->{
-                    produtosRepository.deleteById(id);
-                    return Void.TYPE;
-                }).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado !"));
+                .orElseThrow( () ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "Produto não encontrado."));
     }
 
-    @GetMapping("{id}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Produto getProdutoById(@PathVariable Integer id) {
-     return produtosRepository.findById(id).orElseThrow(    () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado !"));
+    public void delete(@PathVariable Integer id) {
+        produtosRepository
+                .findById(id)
+                .map(p -> {
+                    produtosRepository.delete(p);
+                    return Void.TYPE;
+                }).orElseThrow(() ->
+                new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Produto não encontrado."));
     }
 
     @GetMapping
